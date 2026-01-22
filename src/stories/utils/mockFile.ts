@@ -17,12 +17,11 @@ export const createMockFile = (
     }
 
     const blob = new Blob([buffer], { type });
-    const file = new File([blob], name, {
+
+    return new File([blob], name, {
         type,
         lastModified: Date.now()
     });
-
-    return file;
 };
 
 /**
@@ -43,7 +42,8 @@ export const mockFiles = {
  */
 export const createMockFileList = (count: number = 3): File[] => {
     const files: File[] = [];
-    const types = [
+
+    const templates = [
         { name: "report.pdf", size: 3, type: "application/pdf" },
         { name: "presentation.pptx", size: 7, type: "application/vnd.ms-powerpoint" },
         { name: "image.jpg", size: 2, type: "image/jpeg" },
@@ -52,12 +52,16 @@ export const createMockFileList = (count: number = 3): File[] => {
     ];
 
     for (let i = 0; i < count; i++) {
-        const template = types[i % types.length];
-        files.push(createMockFile(
-            `${i + 1}-${template.name}`,
-            template.size,
-            template.type
-        ));
+        const template = templates[i % templates.length]!;
+        // Non-null assertion fixes TS error
+
+        files.push(
+            createMockFile(
+                `${i + 1}-${template.name}`,
+                template.size,
+                template.type
+            )
+        );
     }
 
     return files;

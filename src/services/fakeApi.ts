@@ -20,10 +20,10 @@ export type UploadMode = 'normal' | 'failure' | 'slow';
  */
 export const fakeApi = {
     uploadChunk: async (
-        fileId: string,
+        _fileId: string,
         chunkIndex: number,
         totalChunks: number,
-        chunk: Blob,
+        _chunk: Blob,
         mode: UploadMode = 'normal',
         onProgress?: (p: number) => void
     ): Promise<UploadResponse> => {
@@ -75,8 +75,8 @@ export const fakeApi = {
     },
 
     finishUpload: async (
-        fileId: string,
-        checksum: string
+        _fileId: string,
+        _checksum: string
     ): Promise<UploadResponse> => {
         return new Promise((resolve) => {
             setTimeout(() => {
