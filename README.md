@@ -1,55 +1,68 @@
-# Robust Chunked File Uploader
+<div align="center" style="background-color:#0d1117; padding:40px; border-radius:12px;">
 
-A production-style file uploader built with **React, TypeScript, and Tailwind CSS**.  
-Supports chunked uploads, pause/resume, retry on failure, and upload persistence.
+# File Uploader  
+### Chunked Multi-File Upload System  
+**React • Vite • Storybook • Chromatic**
 
----
-
-## 🚀 Project Overview
-
-This project demonstrates how to upload large files reliably by splitting them into small chunks.  
-It simulates real-world network conditions and provides full control to the user.
-
-Users can:
-- Pause uploads
-- Resume from the exact chunk
-- Retry after failures
-- Continue uploads even after page refresh
+</div>
 
 ---
 
-## ✨ Features
+## Overview
 
-- **Chunked Upload**
-  - Files are split into **1MB chunks**
-  - Uploaded sequentially for reliability
+A modern **multi-file uploader** built with **React + Vite**, supporting **chunked uploads**, **pause/resume**, **retry on failure**, and **queue management**.
 
-- **Pause & Resume**
-  - Pause at any time
-  - Resume from the exact same chunk
-
-- **Retry on Failure**
-  - Backend intentionally fails at **chunk #3**
-  - Allows testing real retry logic
-
-- **Persistent Upload**
-  - Progress saved in `localStorage`
-  - Uses file **SHA-256 checksum**
-  - Upload resumes even after page refresh
-
-- **Accessibility**
-  - Keyboard navigation
-  - Screen reader support
-  - Proper ARIA roles
+The project includes a **fully documented Storybook**, deployed via **Chromatic**, showcasing all UI states as required for the **Uzence Internship Assignment**.
 
 ---
 
-## 🛠 Setup Instructions
+## Features
 
-### Prerequisites
-- Node.js **v18+**
-- npm **v9+**
+- Chunked file uploads (large file support)
+- Pause & resume uploads
+- Retry on failure
+- Upload queue management
+- Progress persistence
+- Dark UI design
+- Fully documented Storybook
 
-### Install Dependencies
+---
+
+
+---
+
+## Storybook Coverage
+
+The Storybook demonstrates the following states:
+
+- Uploading
+- Paused
+- Waiting
+- Error
+- Completed
+- Multiple Files Queue
+
+Each state is isolated, interactive, and visually documented.
+
+---
+
+## Tech Stack
+
+- React 19
+- Vite
+- TypeScript
+- Tailwind CSS
+- Storybook
+- Chromatic
+- Vitest
+
+---
+
+## Local Setup
+
 ```bash
 npm install
+npm run dev
+npm run storybook
+
+
