@@ -28,9 +28,6 @@ The project includes a **fully documented Storybook**, deployed via **Chromatic*
 
 ---
 
-
----
-
 ## Storybook Coverage
 
 The Storybook demonstrates the following states:
