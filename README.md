@@ -71,7 +71,6 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 | 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
 | 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
 | 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
-| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
 | 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
 | 👤 | **User Profile** | Account details, cloud usage stats, and password management |
 
