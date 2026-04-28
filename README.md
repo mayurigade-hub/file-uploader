@@ -61,5 +61,17 @@ Each state is isolated, interactive, and visually documented.
 npm install
 npm run dev
 npm run storybook
+```
 
+---
+
+## 🚀 Next Phase: Full-Stack MERN Architecture
+
+In the next phase, this project will evolve into a complete end-to-end system integrating a real backend and production-grade architecture, serving as a core feature inside a larger MERN application similar to Google Drive:
+
+- **Node.js + Express API:** To handle authenticated upload requests and chunk processing.
+- **Signed Upload URLs:** For secure, scalable, and direct-to-storage file handling.
+- **MongoDB:** To store file metadata, upload status, and user associations.
+- **JWT Authentication:** To enable user-specific uploads, access control, and secure endpoints.
+- **Real Backend Service:** Replacing the current simulated fake API with robust backend logic.
 
