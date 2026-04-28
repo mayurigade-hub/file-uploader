@@ -35,21 +35,21 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 ## 📸 Screenshots
 
 ### 🚀 Upload Dashboard — Live Chunked Upload
-> *Active upload session showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Recent Uploads queue shows per-file progress bar, status badge, and toast notification confirming successful upload.*
+> *Active upload session showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Processing queue shows per-file progress bar, status badge, and toast notification confirming successful upload.*
 
 ![Upload Dashboard](./assets/upload-dashboard.png)
 
 ---
 
 ### 📁 My Files — File Management Dashboard
-> *Complete file library with Storage Usage card (2.53 MB used of 100 MB limit), file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions. Each file entry shows type icon, truncated name, size, and upload date.*
+> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
 
 ![My Files Dashboard](./assets/my-files.png)
 
 ---
 
 ### 👁️ File Preview — In-App Document Viewer
-> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom, page navigation, and toolbar controls rendered directly inside CloudDrop. Header shows file name, size, date, and a direct Download button.*
+> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom and page navigation rendered directly inside CloudDrop.*
 
 ![File Preview](./assets/file-preview.png)
 
@@ -62,42 +62,24 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 | | Feature | Description |
 |---|---|---|
 | 🧩 | **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
-| ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a full page refresh |
+| ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
 | 🔁 | **Auto Retry** | Failed chunks are automatically retried without user intervention |
-| 📋 | **Upload Queue** | Manage multiple simultaneous uploads with per-file progress bars and status indicators |
-| 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser — no download needed |
-| 🔍 | **Search & Filter** | Instantly search files by name; filter by type — Documents, Images, Videos, Others |
+| 📋 | **Upload Queue** | Manage multiple simultaneous uploads with per-file progress bars |
+| 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
+| 🔍 | **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
 | 🔃 | **Sort Files** | Sort your library by Date, Name, or Size in either direction |
-| 💾 | **Storage Tracker** | Visual storage usage bar with percentage, bytes used, and 100MB limit indicator |
-| 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions — removes from both storage and database |
+| 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
+| 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
 | 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
-| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force and spam attacks |
-| 🚫 | **Duplicate Prevention** | Backend checks prevent the same file from being saved multiple times |
-| 🔔 | **Toast Notifications** | Non-blocking success, error, and loading feedback for every user action |
-| 👤 | **User Profile** | Account details, cloud usage stats, and password management in one place |
+| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
+| 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
+| 👤 | **User Profile** | Account details, cloud usage stats, and password management |
 
 ---
 
 <a name="architecture"></a>
 
 ## 🏗️ Architecture
-
-The application is split into two independent services — `frontend` and `backend` — coordinated through a root workspace.
-
-### Frontend — React + Vite + TypeScript
-
-- **UI/UX:** Dark-themed, premium interface built with Tailwind CSS
-- **State Management:** Custom hooks (`useUploadQueue`, `useFileUploader`) manage complex multi-upload state
-- **Chunking Logic:** Files are sliced client-side into fixed segments and uploaded sequentially with pause/resume support
-- **Auth:** JWT stored via `authService.ts` with automatic injection into every API request header
-- **Storybook:** All UI components documented and tested in isolation via Storybook + Chromatic
-
-### Backend — Node.js + Express + MongoDB
-
-- **API:** RESTful endpoints under `/api/auth` and `/api/upload`
-- **Chunk Processing:** Multer receives individual segments; Node's `fs` module merges them into the final file once all parts arrive
-- **Database:** MongoDB Atlas (via Mongoose) stores user profiles, file metadata, upload status, and chunk tracking
-- **Security:** JWT middleware (`auth.ts`) protects all upload and file routes; `express-rate-limit` guards auth and upload endpoints
 
 ### How a Chunked Upload Works
 
@@ -106,15 +88,13 @@ Your large file
       ↓
 Split into chunks (5MB each) — client side
       ↓
-POST /api/upload  →  chunk 1  ✅  saved to /temp/
-POST /api/upload  →  chunk 2  ✅  saved to /temp/
+POST /api/upload  →  chunk 1  ✅
+POST /api/upload  →  chunk 2  ✅
 POST /api/upload  →  chunk 3  ❌  network drops
       ↓
 Resume — retries chunk 3 only
       ↓
-All chunks received
-      ↓
-fs merges chunks → final file saved to /uploads/
+All chunks received → fs merges → final file saved
       ↓
 Metadata written to MongoDB  ✅
 ```
@@ -131,7 +111,7 @@ Metadata written to MongoDB  ✅
 | **Auth** | JSON Web Tokens (JWT), bcrypt |
 | **File Handling** | Multer, Node.js `fs` module |
 | **UI Libraries** | Lucide React, React Hot Toast |
-| **Dev & Docs** | Vitest, Storybook, Chromatic, ESLint |
+| **Dev & Docs** | Vitest, Storybook, Chromatic |
 
 ---
 
@@ -139,55 +119,21 @@ Metadata written to MongoDB  ✅
 
 ```
 file-uploader/
-│
-├── backend/                          # Express + Node.js server
+├── backend/
 │   ├── src/
-│   │   ├── middleware/
-│   │   │   └── auth.ts               # JWT verification middleware
-│   │   ├── models/
-│   │   │   ├── File.ts               # File schema — name, size, chunks, userId
-│   │   │   └── User.ts               # User schema — name, email, phone, username
-│   │   ├── routes/
-│   │   │   ├── authRoutes.ts         # /api/auth — register, login, profile
-│   │   │   └── uploadRoutes.ts       # /api/upload — chunk upload, merge, fetch
-│   │   └── index.ts                  # Server entry point, MongoDB connection
-│   ├── temp/                         # Temporary chunk storage during upload
-│   ├── uploads/                      # Final merged files stored here
-│   ├── .env                          # Environment variables (gitignored)
-│   ├── .env.example                  # Environment variable template
-│   ├── check_db.ts                   # MongoDB connection health check
-│   └── tsconfig.json
+│   │   ├── middleware/        # JWT auth middleware
+│   │   ├── models/            # User and File schemas
+│   │   └── routes/            # Auth and upload routes
+│   ├── temp/                  # Temporary chunk storage
+│   └── uploads/               # Final merged files
 │
-├── frontend/                         # React + Vite client
+├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── DropZone.tsx          # Drag and drop upload area
-│   │   │   ├── ErrorMessage.tsx      # Error display component
-│   │   │   ├── FileUploader.tsx      # Core upload UI with queue
-│   │   │   ├── Login.tsx             # Login + Register forms
-│   │   │   ├── MyFiles.tsx           # File dashboard — search, filter, sort
-│   │   │   ├── ProgressBar.tsx       # Per-file upload progress bar
-│   │   │   ├── UploadControls.tsx    # Pause, Resume, Clear All controls
-│   │   │   └── UserProfile.tsx       # Profile page — details + cloud usage
-│   │   ├── hooks/
-│   │   │   ├── useFileUploader.ts    # Single file upload logic + chunk management
-│   │   │   └── useUploadQueue.ts     # Multi-file queue state management
-│   │   ├── services/
-│   │   │   ├── authService.ts        # Login, register, profile API calls
-│   │   │   ├── fakeApi.ts            # Mock API for Storybook development
-│   │   │   ├── indexedDB.ts          # Progress persistence across page refreshes
-│   │   │   └── uploadService.ts      # Chunk upload, merge, file fetch API calls
-│   │   ├── stories/                  # Storybook component stories
-│   │   │   └── file-uploader/
-│   │   │       └── FileUploader.stories.tsx
-│   │   ├── utils/
-│   │   │   └── createMockFile.ts     # Test file generation utility
-│   │   ├── App.tsx                   # Routes + Toaster setup
-│   │   └── main.tsx                  # React entry point
-│   ├── index.html
-│   └── vite.config.ts
+│   │   ├── components/        # UI components
+│   │   ├── hooks/             # useFileUploader, useUploadQueue
+│   │   └── services/          # API calls — auth, upload
+│   └── index.html
 │
-├── package.json                      # Root workspace config
 └── README.md
 ```
 
@@ -209,15 +155,12 @@ file-uploader/
 git clone https://github.com/your-username/file-uploader.git
 cd file-uploader
 
-# 2. Install backend dependencies
+# 2. Install dependencies
 cd backend && npm install
-
-# 3. Install frontend dependencies
 cd ../frontend && npm install
 
-# 4. Configure environment variables
-cd ../backend
-cp .env.example .env
+# 3. Configure environment variables
+cd backend && cp .env.example .env
 ```
 
 Add your credentials to `backend/.env`:
@@ -229,43 +172,15 @@ PORT=5000
 ```
 
 ```bash
-# 5. Start the backend
+# 4. Start backend
 cd backend && npm run dev
 
-# 6. Start the frontend (new terminal)
+# 5. Start frontend (new terminal)
 cd frontend && npm run dev
 ```
 
-Frontend runs on `http://localhost:5173`
-Backend runs on `http://localhost:5000`
-
-### Run Storybook
-
-```bash
-cd frontend && npm run storybook
-```
-
----
-
-## 🎮 Usage
-
-### Uploading a File
-
-1. Register or log in to your CloudDrop account
-2. On the **Upload Dashboard**, drag and drop any file — or click to browse
-3. Watch the real-time progress bar as chunks are uploaded sequentially
-4. Use **Pause** to suspend mid-upload and **Resume** to continue anytime
-5. Once complete, a toast notification confirms — the file appears in **My Files**
-
-### Managing Your Files
-
-1. Navigate to **My Files** to see your complete file library
-2. Use the **search bar** to find files by name
-3. Use **filter tabs** to view only Documents, Images, Videos, or Others
-4. Use **Sort By** to order by date, name, or size
-5. Click any **file name** to open a full in-app preview
-6. Use the **download icon** to save a file locally
-7. Use the **delete icon** to permanently remove a file (with confirmation)
+Frontend → `http://localhost:5173`
+Backend → `http://localhost:5000`
 
 ---
 
@@ -273,7 +188,7 @@ cd frontend && npm run storybook
 
 ## 🌐 Live Demo
 
-> **Deployed Link:** _coming soon — will be updated after deployment_
+> **Deployed Link:** _coming soon_
 
 ---
 
