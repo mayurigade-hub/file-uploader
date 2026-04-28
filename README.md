@@ -37,21 +37,21 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 ### 🚀 Upload Dashboard — Live Chunked Upload
 > *Active upload session showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Processing queue shows per-file progress bar, status badge, and toast notification confirming successful upload.*
 
-![Upload Dashboard](./assets/upload-dashboard.png)
+![Upload Dashboard](./assets/Upload Dashboard.png)
 
 ---
 
 ### 📁 My Files — File Management Dashboard
 > *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
 
-![My Files Dashboard](./assets/my-files.png)
+![My Files Dashboard](./assets/My Files.png)
 
 ---
 
 ### 👁️ File Preview — In-App Document Viewer
 > *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom and page navigation rendered directly inside CloudDrop.*
 
-![File Preview](./assets/file-preview.png)
+![File Preview](./assets/File Preview.png)
 
 ---
 
