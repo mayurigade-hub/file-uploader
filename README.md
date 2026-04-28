@@ -1,77 +1,206 @@
-<div align="center" style="background-color:#0d1117; padding:40px; border-radius:12px;">
+<div align="center">
 
-# File Uploader  
-### Chunked Multi-File Upload System  
-**React • Vite • Storybook • Chromatic**
+# CloudDrop ☁️
+
+### Production-Grade Chunked File Upload System
+
+*A robust, full-stack file management application that handles massive file uploads reliably — splitting them into chunks, surviving network failures, and resuming exactly where you left off.*
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://mongodb.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
+
+[🚀 Getting Started](#getting-started) · [🏗️ Architecture](#architecture) · [✨ Features](#features) · [📸 Screenshots](#screenshots) · [🌐 Live Demo](#live-demo)
 
 </div>
 
 ---
 
-## Overview
+## 🧠 What is CloudDrop?
 
-A modern **multi-file uploader** built with **React + Vite**, supporting **chunked uploads**, **pause/resume**, **retry on failure**, and **queue management**.
+CloudDrop is a production-grade MERN stack application built to answer one question:
 
-The project includes a **fully documented Storybook**, deployed via **Chromatic**, showcasing all UI states as required for the **Uzence Internship Assignment**.
+> **How do you upload a large file reliably over an unstable internet connection — without ever starting over?**
 
----
+It solves this by breaking every file into small chunks (5MB each), uploading them sequentially, and tracking exactly which chunks the server has already received. If your connection drops at chunk 37 of 200 — CloudDrop resumes at chunk 37. Not chunk 1.
 
-## Features
-
-- Chunked file uploads (large file support)
-- Pause & resume uploads
-- Retry on failure
-- Upload queue management
-- Progress persistence
-- Dark UI design
-- Fully documented Storybook
+No timeouts. No full restarts. Just reliable file delivery — with a full user authentication system, file management dashboard, and real-time progress tracking built on top.
 
 ---
 
-## Storybook Coverage
+<a name="screenshots"></a>
 
-The Storybook demonstrates the following states:
+## 📸 Screenshots
 
-- Uploading
-- Paused
-- Waiting
-- Error
-- Completed
-- Multiple Files Queue
+### 🚀 Upload Dashboard — Live Chunked Upload
+> *Active upload session showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Processing queue shows per-file progress bar, status badge, and toast notification confirming successful upload.*
 
-Each state is isolated, interactive, and visually documented.
+![Upload Dashboard](./assets/upload-dashboard.png)
 
 ---
 
-## Tech Stack
+### 📁 My Files — File Management Dashboard
+> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
 
-- React 19
-- Vite
-- TypeScript
-- Tailwind CSS
-- Storybook
-- Chromatic
-- Vitest
+![My Files Dashboard](./assets/my-files.png)
 
 ---
 
-## Local Setup
+### 👁️ File Preview — In-App Document Viewer
+> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom and page navigation rendered directly inside CloudDrop.*
 
-```bash
-npm install
-npm run dev
-npm run storybook
+![File Preview](./assets/file-preview.png)
+
+---
+
+<a name="features"></a>
+
+## ✨ Features
+
+| | Feature | Description |
+|---|---|---|
+| 🧩 | **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
+| ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
+| 🔁 | **Auto Retry** | Failed chunks are automatically retried without user intervention |
+| 📋 | **Upload Queue** | Manage multiple simultaneous uploads with per-file progress bars |
+| 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
+| 🔍 | **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
+| 🔃 | **Sort Files** | Sort your library by Date, Name, or Size in either direction |
+| 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
+| 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
+| 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
+| 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
+| 👤 | **User Profile** | Account details, cloud usage stats, and password management |
+
+---
+
+<a name="architecture"></a>
+
+## 🏗️ Architecture
+
+### How a Chunked Upload Works
+
+```
+Your large file
+      ↓
+Split into chunks (5MB each) — client side
+      ↓
+POST /api/upload  →  chunk 1  ✅
+POST /api/upload  →  chunk 2  ✅
+POST /api/upload  →  chunk 3  ❌  network drops
+      ↓
+Resume — retries chunk 3 only
+      ↓
+All chunks received → fs merges → final file saved
+      ↓
+Metadata written to MongoDB  ✅
 ```
 
 ---
 
-## 🚀 Next Phase: Full-Stack MERN Architecture
+## 🛠️ Tech Stack
 
-In the next phase, this project will evolve into a complete end-to-end system integrating a real backend and production-grade architecture, serving as a core feature inside a larger MERN application similar to Google Drive:
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS |
+| **Backend** | Node.js, Express.js, TypeScript |
+| **Database** | MongoDB Atlas, Mongoose |
+| **Auth** | JSON Web Tokens (JWT), bcrypt |
+| **File Handling** | Multer, Node.js `fs` module |
+| **UI Libraries** | Lucide React, React Hot Toast |
+| **Dev & Docs** | Vitest, Storybook, Chromatic |
 
-- **Node.js + Express API:** To handle authenticated upload requests and chunk processing.
-- **Signed Upload URLs:** For secure, scalable, and direct-to-storage file handling.
-- **MongoDB:** To store file metadata, upload status, and user associations.
-- **JWT Authentication:** To enable user-specific uploads, access control, and secure endpoints.
-- **Real Backend Service:** Replacing the current simulated fake API with robust backend logic.
+---
 
+## 📂 Directory Structure
+
+```
+file-uploader/
+├── backend/
+│   ├── src/
+│   │   ├── middleware/        # JWT auth middleware
+│   │   ├── models/            # User and File schemas
+│   │   └── routes/            # Auth and upload routes
+│   ├── temp/                  # Temporary chunk storage
+│   └── uploads/               # Final merged files
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/        # UI components
+│   │   ├── hooks/             # useFileUploader, useUploadQueue
+│   │   └── services/          # API calls — auth, upload
+│   └── index.html
+│
+└── README.md
+```
+
+---
+
+<a name="getting-started"></a>
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js `18+`
+- MongoDB Atlas account
+
+### Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-username/file-uploader.git
+cd file-uploader
+
+# 2. Install dependencies
+cd backend && npm install
+cd ../frontend && npm install
+
+# 3. Configure environment variables
+cd backend && cp .env.example .env
+```
+
+Add your credentials to `backend/.env`:
+
+```env
+MONGO_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=5000
+```
+
+```bash
+# 4. Start backend
+cd backend && npm run dev
+
+# 5. Start frontend (new terminal)
+cd frontend && npm run dev
+```
+
+Frontend → `http://localhost:5173`
+Backend → `http://localhost:5000`
+
+---
+
+<a name="live-demo"></a>
+
+## 🌐 Live Demo
+
+> **Deployed Link:** _coming soon_
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
+
+---
+
+<div align="center">
+
+*Built with React, Node.js, MongoDB, and a lot of chunked requests.*
+
+**CloudDrop — Upload anything. Lose nothing.**
+
+</div>
