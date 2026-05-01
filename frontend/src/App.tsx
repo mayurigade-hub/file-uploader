@@ -14,7 +14,6 @@ function App() {
     const [showLanding, setShowLanding] = useState(!authService.isAuthenticated());
     const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
     const [name, setName] = useState(authService.getName() || '');
-    const [isNewUser, setIsNewUser] = useState(false);
     const [activeTab, setActiveTab] = useState<'upload' | 'files' | 'profile'>('upload');
     const [showDropdown, setShowDropdown] = useState(false);
     const [toasts, setToasts] = useState<{ id: number, message: string, type: 'success' | 'error' | 'warning' }[]>([]);
@@ -53,7 +52,6 @@ function App() {
     const handleLoginSuccess = (isRegistration: boolean = false) => {
         setIsAuthenticated(true);
         setName(authService.getName() || '');
-        setIsNewUser(isRegistration);
         showToast(`Welcome back, ${authService.getName()}!`, 'success');
     };
 
@@ -63,7 +61,6 @@ function App() {
         setIsAuthenticated(false);
         setShowLanding(true);
         setName('');
-        setIsNewUser(false);
         showToast('Logged out successfully', 'warning');
     };
 
@@ -77,9 +74,9 @@ function App() {
     if (!isAuthenticated) {
         if (showLanding) {
             return (
-                <LandingPage 
-                    onSignIn={() => { setAuthMode('login'); setShowLanding(false); }} 
-                    onGetStarted={() => { setAuthMode('register'); setShowLanding(false); }} 
+                <LandingPage
+                    onSignIn={() => { setAuthMode('login'); setShowLanding(false); }}
+                    onGetStarted={() => { setAuthMode('register'); setShowLanding(false); }}
                 />
             );
         }
@@ -110,11 +107,10 @@ function App() {
                     <ThemeToggle />
                     <button
                         onClick={() => setShowDropdown(!showDropdown)}
-                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold text-white transition-all shadow-lg ${
-                            activeTab === 'profile'
-                                ? 'bg-blue-600 ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-black scale-105'
-                                : 'bg-gray-400 dark:bg-gray-700 hover:bg-gray-500'
-                        }`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold text-white transition-all shadow-lg ${activeTab === 'profile'
+                            ? 'bg-blue-600 ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-black scale-105'
+                            : 'bg-gray-400 dark:bg-gray-700 hover:bg-gray-500'
+                            }`}
                     >
                         {name.charAt(0).toUpperCase()}
                     </button>
@@ -148,28 +144,25 @@ function App() {
             <div className="relative z-10 max-w-4xl mx-auto space-y-6 sm:space-y-8">
                 {/* TAB SWITCHER */}
                 <div className="flex p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-[1.5rem] shadow-sm max-w-sm mx-auto mb-10 relative">
-                    <div 
-                        className={`absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-gray-900 dark:bg-gray-800 rounded-xl transition-transform duration-500 ease-out shadow-md ${
-                            activeTab === 'files' ? 'translate-x-full' : 'translate-x-0'
-                        }`}
+                    <div
+                        className={`absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-gray-900 dark:bg-gray-800 rounded-xl transition-transform duration-500 ease-out shadow-md ${activeTab === 'files' ? 'translate-x-full' : 'translate-x-0'
+                            }`}
                     ></div>
                     <button
                         onClick={() => setActiveTab('upload')}
-                        className={`flex-1 py-3 px-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 relative z-10 rounded-xl ${
-                            activeTab === 'upload' 
-                                ? 'text-white' 
-                                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                        }`}
+                        className={`flex-1 py-3 px-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 relative z-10 rounded-xl ${activeTab === 'upload'
+                            ? 'text-white'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                            }`}
                     >
                         Upload Dashboard
                     </button>
                     <button
                         onClick={() => setActiveTab('files')}
-                        className={`flex-1 py-3 px-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 relative z-10 rounded-xl ${
-                            activeTab === 'files' 
-                                ? 'text-white' 
-                                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                        }`}
+                        className={`flex-1 py-3 px-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 relative z-10 rounded-xl ${activeTab === 'files'
+                            ? 'text-white'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                            }`}
                     >
                         My Files
                     </button>
@@ -261,19 +254,17 @@ function App() {
             {/* TOAST CONTAINER */}
             <div className="fixed bottom-4 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-[100] flex flex-col gap-3 pointer-events-none">
                 {toasts.map(toast => (
-                    <div 
+                    <div
                         key={toast.id}
-                        className={`pointer-events-auto flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 rounded-2xl shadow-2xl border backdrop-blur-md animate-in slide-in-from-right-full duration-300 ${
-                            toast.type === 'success' ? 'bg-white/90 dark:bg-green-950/40 border-green-100 dark:border-green-900/30 text-green-700 dark:text-green-400' :
+                        className={`pointer-events-auto flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 rounded-2xl shadow-2xl border backdrop-blur-md animate-in slide-in-from-right-full duration-300 ${toast.type === 'success' ? 'bg-white/90 dark:bg-green-950/40 border-green-100 dark:border-green-900/30 text-green-700 dark:text-green-400' :
                             toast.type === 'error' ? 'bg-white/90 dark:bg-red-950/40 border-red-100 dark:border-red-900/30 text-red-700 dark:text-red-400' :
-                            'bg-white/90 dark:bg-amber-950/40 border-amber-100 dark:border-amber-900/30 text-amber-700 dark:text-amber-400'
-                        }`}
+                                'bg-white/90 dark:bg-amber-950/40 border-amber-100 dark:border-amber-900/30 text-amber-700 dark:text-amber-400'
+                            }`}
                     >
-                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 ${
-                            toast.type === 'success' ? 'bg-green-100 dark:bg-green-900/30' :
+                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 ${toast.type === 'success' ? 'bg-green-100 dark:bg-green-900/30' :
                             toast.type === 'error' ? 'bg-red-100 dark:bg-red-900/30' :
-                            'bg-amber-100 dark:bg-amber-900/30'
-                        }`}>
+                                'bg-amber-100 dark:bg-amber-900/30'
+                            }`}>
                             {toast.type === 'success' && <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
                             {toast.type === 'error' && <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>}
                             {toast.type === 'warning' && <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>}

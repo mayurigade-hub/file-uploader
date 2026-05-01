@@ -20,22 +20,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 10);
-    return () => clearTimeout(t);
-  }, []);
 
   const handleModeSwitch = (register: boolean) => {
-    setMounted(false);
-    setTimeout(() => {
-      setIsRegistering(register);
-      setError('');
-      setMounted(true);
-    }, 200);
+    setIsRegistering(register);
+    setError('');
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -111,22 +100,20 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
             <button
               type="button"
               onClick={() => handleModeSwitch(false)}
-              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${
-                !isRegistering
-                  ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
+              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${!isRegistering
+                ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg'
+                : 'text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
             >
               Sign In
             </button>
             <button
               type="button"
               onClick={() => handleModeSwitch(true)}
-              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${
-                isRegistering
-                  ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
+              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${isRegistering
+                ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg'
+                : 'text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
             >
               Create Account
             </button>
@@ -266,11 +253,10 @@ const LightInput: React.FC<LightInputProps> = ({
     <div className="relative group">
       <label
         htmlFor={id}
-        className={`absolute left-11 transition-all duration-200 pointer-events-none font-semibold z-10 ${
-          focused || value
-            ? '-top-2.5 text-xs text-sky-500 bg-white dark:bg-gray-900 px-1'
-            : 'top-3.5 text-sm text-gray-400'
-        }`}
+        className={`absolute left-11 transition-all duration-200 pointer-events-none font-semibold z-10 ${focused || value
+          ? '-top-2.5 text-xs text-sky-500 bg-white dark:bg-gray-900 px-1'
+          : 'top-3.5 text-sm text-gray-400'
+          }`}
       >
         {label}
       </label>
@@ -288,11 +274,10 @@ const LightInput: React.FC<LightInputProps> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={focused ? placeholder : ''}
-        className={`w-full pl-11 pt-4 pb-2 bg-white dark:bg-gray-800 border rounded-xl text-gray-900 dark:text-white text-sm font-medium outline-none transition-all duration-200 placeholder:text-gray-300 dark:placeholder:text-gray-600 ${
-          focused
-            ? 'border-sky-400 shadow-lg shadow-sky-300/20 dark:shadow-sky-900/20'
-            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-        }`}
+        className={`w-full pl-11 pt-4 pb-2 bg-white dark:bg-gray-800 border rounded-xl text-gray-900 dark:text-white text-sm font-medium outline-none transition-all duration-200 placeholder:text-gray-300 dark:placeholder:text-gray-600 ${focused
+          ? 'border-sky-400 shadow-lg shadow-sky-300/20 dark:shadow-sky-900/20'
+          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+          }`}
         style={{ paddingRight: rightAction ? '2.75rem' : '1rem' }}
       />
       {rightAction && (
