@@ -49,7 +49,7 @@ function App() {
         }
     }, []);
 
-    const handleLoginSuccess = (isRegistration: boolean = false) => {
+    const handleLoginSuccess = () => {
         setIsAuthenticated(true);
         setName(authService.getName() || '');
         showToast(`Welcome back, ${authService.getName()}!`, 'success');
