@@ -289,8 +289,8 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
             <thead>
               <tr className="bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 <th className="px-6 py-4">File Name</th>
-                <th className="px-6 py-4">Size</th>
-                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4 hidden sm:table-cell">Size</th>
+                <th className="px-6 py-4 hidden sm:table-cell">Date</th>
                 <th className="px-6 py-4 text-right">Action</th>
               </tr>
             </thead>
@@ -307,19 +307,24 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {getFileIcon(file.filename)}
-                        <span 
-                          onClick={() => setPreviewFile(file)}
-                          className="text-sm font-bold text-gray-900 dark:text-white truncate max-w-[200px] cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-all"
-                          title="Click to preview"
-                        >
-                          {file.filename}
-                        </span>
+                        <div className="flex flex-col min-w-0">
+                          <span 
+                            onClick={() => setPreviewFile(file)}
+                            className="text-sm font-bold text-gray-900 dark:text-white truncate max-w-[150px] sm:max-w-[200px] cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-all"
+                            title="Click to preview"
+                          >
+                            {file.filename}
+                          </span>
+                          <span className="text-[10px] text-gray-400 font-medium sm:hidden">
+                            {formatSize(file.totalSize)} • {formatDate(file.createdAt)}
+                          </span>
+                        </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 font-mono">
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 font-mono hidden sm:table-cell">
                       {formatSize(file.totalSize)}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 hidden sm:table-cell">
                       {formatDate(file.createdAt)}
                     </td>
                     <td className="px-6 py-4 text-right flex justify-end gap-2">

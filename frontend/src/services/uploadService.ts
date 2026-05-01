@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://localhost:5000/api/upload';
+const API_BASE_URL = '/api/upload';
 
 // Create axios instance with timeout
 const api = axios.create({

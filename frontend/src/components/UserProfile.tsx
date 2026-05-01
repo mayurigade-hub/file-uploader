@@ -126,26 +126,26 @@ export const UserProfile: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
       {/* PROFILE HEADER CARD */}
-      <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full -mr-32 -mt-32 blur-3xl" />
         
-        <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-          <div className="w-32 h-32 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-black shadow-xl shadow-blue-500/30 border-4 border-white dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 relative z-10">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-full flex items-center justify-center text-white text-3xl sm:text-4xl font-black shadow-xl shadow-blue-500/30 border-4 border-white dark:border-gray-800">
             {profile?.name?.charAt(0).toUpperCase()}
           </div>
           
-          <div className="text-center md:text-left">
-            <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-1">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1">
               {profile?.name}
             </h1>
-            <p className="text-blue-600 dark:text-blue-400 font-bold text-lg mb-4">
+            <p className="text-blue-600 dark:text-blue-400 font-bold text-base sm:text-lg mb-4">
               @{profile?.username?.replace(/^@+/, '')}
             </p>
             
-            <div className="flex flex-wrap justify-center md:justify-start gap-4">
-              <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl flex items-center gap-2 border border-gray-100 dark:border-gray-700">
-                <Calendar className="w-4 h-4 text-gray-400" />
-                <span className="text-xs font-bold text-gray-600 dark:text-gray-400">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4">
+              <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 dark:bg-gray-800 rounded-xl flex items-center gap-2 border border-gray-100 dark:border-gray-700">
+                <Calendar className="w-3.5 h-3.5 sm:w-4 h-4 text-gray-400" />
+                <span className="text-[10px] sm:text-xs font-bold text-gray-600 dark:text-gray-400">
                   {formatDate(profile?.createdAt)}
                 </span>
               </div>

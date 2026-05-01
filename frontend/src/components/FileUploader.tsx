@@ -124,7 +124,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
 
     return (
-        <div className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all">
+        <div className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-blue-100 dark:hover:border-blue-900/50 group">
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3 overflow-hidden">

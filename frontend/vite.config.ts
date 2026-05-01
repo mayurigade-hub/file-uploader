@@ -15,12 +15,25 @@ const dirname =
 
 export default defineConfig({
   // 🔥 REQUIRED for GitHub Pages
-  base: "/file-uploader/",
+  base: "/",
 
   plugins: [
     react(),
     tailwindcss()
   ],
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      }
+    }
+  },
 
   test: {
     projects: [
