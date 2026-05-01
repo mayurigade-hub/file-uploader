@@ -21,20 +21,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/upload', authenticateJWT, uploadRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Serve Frontend in Production
-if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(__dirname, '../../frontend/dist');
-  app.use(express.static(frontendPath));
-  
-  // For any other request, send back the index.html
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api')) {
-      return next();
-    }
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
-}
-
 // Health Check Route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Backend is running correctly.' });
@@ -45,8 +31,8 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/file-uploa
 
 console.log(`📡 [${new Date().toLocaleTimeString()}] Starting connection to MongoDB...`);
 // Log the URI but hide credentials if it's an atlas link
-const maskedUri = MONGO_URI.includes('@') 
-  ? MONGO_URI.replace(/\/\/.*@/, '//****:****@') 
+const maskedUri = MONGO_URI.includes('@')
+  ? MONGO_URI.replace(/\/\/.*@/, '//****:****@')
   : MONGO_URI;
 console.log(`🔗 MongoDB URI: ${maskedUri}`);
 
