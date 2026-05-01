@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_BASE_URL = '/api/upload';
+const API = import.meta.env.VITE_API_URL;
+const API_BASE_URL = `${API}/api/upload`;
 
 // Create axios instance with timeout
 const api = axios.create({

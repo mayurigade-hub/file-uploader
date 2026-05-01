@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api/auth';
+const API = import.meta.env.VITE_API_URL;
+const API_BASE_URL = `${API}/api/auth`;
 
 export interface AuthResponse {
   token: string;
@@ -48,7 +49,7 @@ export const authService = {
 
   changePassword: async (currentPassword: string, newPassword: string): Promise<any> => {
     const token = sessionStorage.getItem('token');
-    const response = await axios.put(`${API_BASE_URL}/change-password`, 
+    const response = await axios.put(`${API_BASE_URL}/change-password`,
       { currentPassword, newPassword },
       { headers: { Authorization: `Bearer ${token}` } }
     );
