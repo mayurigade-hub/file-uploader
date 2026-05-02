@@ -14,6 +14,7 @@ interface UploadState {
     speed: number;
     eta: number | null;
     fileUrl: string | null;
+    totalChunks: number;
 }
 
 export const useFileUploader = (_mode: UploadMode = 'normal') => {
@@ -26,7 +27,8 @@ export const useFileUploader = (_mode: UploadMode = 'normal') => {
         uploadId: null,
         speed: 0,
         eta: null,
-        fileUrl: null
+        fileUrl: null,
+        totalChunks: 0
     });
 
     const pauseRef = useRef(false);
@@ -51,7 +53,8 @@ export const useFileUploader = (_mode: UploadMode = 'normal') => {
             setState(s => ({
                 ...s,
                 status: 'uploading',
-                error: null
+                error: null,
+                totalChunks
             }));
 
             try {
@@ -223,7 +226,8 @@ export const useFileUploader = (_mode: UploadMode = 'normal') => {
             uploadId: null,
             speed: 0,
             eta: null,
-            fileUrl: null
+            fileUrl: null,
+            totalChunks: 0
         });
     }, []);
 

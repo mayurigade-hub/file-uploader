@@ -59,7 +59,7 @@ export const DropZone: React.FC<DropZoneProps> = ({ onFilesSelect }) => {
             role="button"
             aria-label="Click to upload or drag and drop files"
             className={`
-                relative group overflow-hidden rounded-[2.5rem] p-10 text-center cursor-pointer
+                relative group overflow-hidden rounded-[2.5rem] py-8 px-6 text-center cursor-pointer
                 transition-all duration-500 ease-in-out border-2 shadow-sm hover:shadow-xl
                 ${isDragging
                     ? 'border-sky-400 bg-sky-50 dark:bg-sky-900/20 scale-[1.02] shadow-sky-500/20'
@@ -69,7 +69,7 @@ export const DropZone: React.FC<DropZoneProps> = ({ onFilesSelect }) => {
             `}
         >
             {/* Background glowing orb effect */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-tr from-sky-400/10 to-blue-500/10 dark:from-sky-500/5 dark:to-blue-600/5 rounded-full blur-[60px] pointer-events-none group-hover:scale-150 group-hover:opacity-100 opacity-50 transition-all duration-700"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-tr from-sky-400/10 to-blue-500/10 dark:from-sky-500/5 dark:to-blue-600/5 rounded-full blur-[60px] pointer-events-none group-hover:scale-150 group-hover:opacity-100 opacity-50 transition-all duration-700"></div>
 
             <input
                 ref={fileInputRef}
@@ -80,20 +80,20 @@ export const DropZone: React.FC<DropZoneProps> = ({ onFilesSelect }) => {
                 aria-hidden="true"
             />
 
-            <div className="relative z-10 flex flex-col items-center gap-6">
+            <div className="relative z-10 flex flex-col items-center gap-4">
                 <div className="relative">
                     {/* Animated rings around icon */}
                     <div className={`absolute inset-0 rounded-full border-2 border-sky-400 transition-all duration-700 ${isDragging ? 'scale-[1.8] opacity-0' : 'scale-[1.2] opacity-0 group-hover:scale-[1.6] group-hover:opacity-30'}`}></div>
                     <div className={`absolute inset-0 rounded-full border-2 border-blue-500 transition-all duration-1000 ${isDragging ? 'scale-[2.2] opacity-0' : 'scale-[1.5] opacity-0 group-hover:scale-[2] group-hover:opacity-20'}`}></div>
                     
                     {/* Main icon container */}
-                    <div className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center transition-all duration-500 shadow-lg ${
+                    <div className={`w-16 h-16 rounded-[1.2rem] flex items-center justify-center transition-all duration-500 shadow-lg ${
                         isDragging 
-                            ? 'bg-gradient-to-tr from-sky-400 to-blue-600 shadow-sky-500/50 scale-110 -translate-y-2' 
-                            : 'bg-white dark:bg-gray-800 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-gradient-to-tr group-hover:from-sky-400 group-hover:to-blue-600'
+                            ? 'bg-gradient-to-tr from-sky-400 to-blue-600 shadow-sky-500/50 scale-110 -translate-y-1' 
+                            : 'bg-white dark:bg-gray-800 group-hover:scale-110 group-hover:-translate-y-1 group-hover:bg-gradient-to-tr group-hover:from-sky-400 group-hover:to-blue-600'
                     }`}>
                         <svg
-                            className={`w-10 h-10 transition-colors duration-500 ${
+                            className={`w-8 h-8 transition-colors duration-500 ${
                                 isDragging ? 'text-white' : 'text-sky-500 group-hover:text-white'
                             }`}
                             fill="none"
@@ -106,10 +106,10 @@ export const DropZone: React.FC<DropZoneProps> = ({ onFilesSelect }) => {
                 </div>
 
                 <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-sky-500 group-hover:to-blue-600 transition-colors">
+                    <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tight mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-sky-500 group-hover:to-blue-600 transition-colors">
                         Click to upload <span className="font-semibold text-gray-400 dark:text-gray-500">or drag & drop</span>
                     </h3>
-                    <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80 px-4 py-1.5 rounded-full inline-block backdrop-blur-sm border border-gray-200 dark:border-gray-700">
+                    <p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                         Any file type, unlimited size
                     </p>
                 </div>

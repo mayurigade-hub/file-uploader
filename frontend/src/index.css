@@ -21,4 +21,19 @@ body {
 #root {
   width: 100%;
   height: 100%;
-}
+}
+
+/* Hide browser-default password eyes and clear buttons */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}

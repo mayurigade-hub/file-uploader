@@ -20,6 +20,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
 
   const handleModeSwitch = (register: boolean) => {
     setIsRegistering(register);
@@ -29,11 +30,18 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
     e.preventDefault();
     setError('');
     setIsLoading(true);
+    setLoadingStep(0);
+    
+    const loadingTimer = setInterval(() => {
+      setLoadingStep(prev => prev + 1);
+    }, 2000);
+
     try {
       if (isRegistering) {
         if (password !== confirmPassword) {
           setError('Passwords do not match');
           setIsLoading(false);
+          clearInterval(loadingTimer);
           return;
         }
         await authService.register(name, username, email, phone, password);
@@ -47,6 +55,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
       setError(err.response?.data?.error || 'Authentication failed');
     } finally {
       setIsLoading(false);
+      clearInterval(loadingTimer);
     }
   };
 
@@ -60,34 +69,35 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
         <div className="absolute top-[40%] right-[20%] w-[500px] h-[500px] bg-cyan-300/10 dark:bg-cyan-400/5 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '5s' }}></div>
       </div>
 
-      {/* Back button — absolute top-left */}
-      <div className="absolute top-6 left-6 z-10">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors group"
-        >
-          <div className="w-8 h-8 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-center group-hover:bg-gray-50 dark:group-hover:bg-gray-700 group-hover:shadow-md transition-all">
-            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-          </div>
-          <span>Back</span>
-        </button>
-      </div>
+      {/* Header Bar — Responsive and spaced */}
+      <div className="absolute top-0 left-0 w-full px-4 sm:px-8 py-6 z-20 flex items-center justify-between pointer-events-none">
+        <div className="pointer-events-auto">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors group"
+          >
+            <div className="w-9 h-9 rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm flex items-center justify-center group-hover:bg-gray-50 dark:group-hover:bg-gray-700 group-hover:shadow-md transition-all">
+              <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </div>
+            <span className="hidden sm:inline">Back</span>
+          </button>
+        </div>
 
-      {/* Theme Toggle — absolute top-right */}
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
+        <div className="pointer-events-auto">
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* CloudDrop logo — centered above card */}
-      <div className="relative z-10 flex items-center gap-2 mb-8 cursor-pointer group" onClick={onBack}>
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-200">
+      <div className="relative z-10 flex items-center gap-3 mb-10 cursor-pointer group" onClick={onBack}>
+        <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/20 group-hover:scale-110 transition-all duration-300">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
         </div>
-        <span className="font-extrabold text-xl tracking-tight text-gray-900 dark:text-white">CloudDrop</span>
+        <span className="font-black text-2xl tracking-tighter text-gray-900 dark:text-white">CloudDrop</span>
       </div>
 
       {/* ── Centered form card ── */}
@@ -205,11 +215,16 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
                 </svg>
               </span>
               {isLoading && (
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
+                <span className="absolute inset-0 flex items-center justify-center bg-inherit">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    <span className="text-sm font-bold animate-pulse">
+                      {loadingStep === 0 ? 'Authenticating...' : loadingStep === 1 ? 'Securing Connection...' : 'Finalizing...'}
+                    </span>
+                  </div>
                 </span>
               )}
             </button>

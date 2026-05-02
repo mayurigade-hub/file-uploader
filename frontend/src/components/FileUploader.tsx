@@ -34,7 +34,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         speed,
         startUpload,
         pauseUpload,
-        resumeUpload
+        resumeUpload,
+        uploadedChunks,
+        totalChunks
     } = useFileUploader(mode);
 
 
@@ -86,19 +88,43 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         return parseFloat((bytesPerSec / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
-    const StatusLabel = ({ status }: { status: UploadStatus | 'waiting' }) => {
+    const retryCount = useRef(0);
+    const [isRetrying, setIsRetrying] = useState(false);
+
+    const handleRetry = async () => {
+        setIsRetrying(true);
+        retryCount.current += 1;
+        await resumeUpload();
+        setTimeout(() => setIsRetrying(false), 500);
+    };
+
+    const StatusLabel = ({ status, isRetrying, current, total }: { status: UploadStatus | 'waiting', isRetrying?: boolean, current: number, total: number }) => {
         const colors: Record<string, string> = {
             waiting: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
             uploading: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-            paused: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
-            error: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
+            paused: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
+            error: 'bg-red-500 text-white shadow-lg shadow-red-500/20',
             completed: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
             idle: 'bg-gray-100 text-gray-600'
         };
 
+        let label = status.toUpperCase();
+        if (isRetrying) {
+            label = `RETRYING (${retryCount.current}/5)`;
+            return (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-black shadow-lg shadow-amber-400/20 animate-pulse">
+                    {label}
+                </span>
+            );
+        }
+        
+        if (status === 'error') {
+            label = `FAILED (Chunk ${current}/${total || '?'})`;
+        }
+
         return (
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${colors[status] || colors.idle}`}>
-                {status}
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${colors[status] || colors.idle}`}>
+                {label}
             </span>
         );
     };
@@ -119,70 +145,114 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         }
     };
 
-
-
-
-
     return (
-        <div className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-blue-100 dark:hover:border-blue-900/50 group">
+        <div className={`p-5 rounded-[2rem] border transition-all duration-500 shadow-sm hover:shadow-xl ${
+            displayStatus === 'error' 
+                ? 'bg-gray-50 dark:bg-gray-900/60 border-red-200 dark:border-red-900/50 scale-[1.01]' 
+                : isRetrying 
+                ? 'bg-amber-50/30 dark:bg-amber-950/10 border-amber-200 dark:border-amber-900/30'
+                : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700'
+        }`}>
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3 overflow-hidden">
-                        <svg className="w-5 h-5 flex-shrink-0 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
-                        </svg>
+                    <div className="flex items-center space-x-4 overflow-hidden">
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 ${
+                            displayStatus === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-600' : 
+                            displayStatus === 'error' ? 'bg-red-100 dark:bg-red-900/30 text-red-600' : 
+                            isRetrying ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600' :
+                            'bg-blue-50 dark:bg-blue-900/20 text-blue-500'
+                        }`}>
+                            {displayStatus === 'completed' ? (
+                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                            ) : displayStatus === 'error' ? (
+                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            ) : (
+                                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            )}
+                        </div>
                         <div className="overflow-hidden">
-                            <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">{file?.name ?? 'Unknown file'}</p>
-                                <StatusLabel status={displayStatus} />
+                            <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <p className="text-base font-black text-gray-900 dark:text-white truncate tracking-tight">{file?.name ?? 'Unknown file'}</p>
+                                <StatusLabel status={displayStatus} isRetrying={isRetrying} current={uploadedChunks} total={totalChunks} />
                             </div>
-                            <p className="text-xs text-gray-400">{((file?.size ?? 0) / 1024 / 1024).toFixed(2)} MB</p>
+                            <div className="flex items-center gap-3">
+                                <p className="text-xs font-black text-gray-400 uppercase tracking-widest">{((file?.size ?? 0) / 1024 / 1024).toFixed(2)} MB</p>
+                                {isRetrying && (
+                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></div>
+                                        Manual Recovery Active
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                    {displayStatus === 'uploading' && (
-                        <div className="text-right text-xs text-gray-500 dark:text-gray-400">
-                            <p>{disableAutoStart ? '2.4 MB/s' : formatSpeed(speed)}</p>
+                    {(displayStatus === 'uploading' || isRetrying) && (
+                        <div className="text-right hidden sm:block">
+                            <p className="text-sm font-black text-blue-600 dark:text-blue-400">{disableAutoStart ? '2.4 MB/s' : formatSpeed(speed)}</p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Current Speed</p>
                         </div>
                     )}
                 </div>
 
-                {queueStatus !== 'waiting' && <ProgressBar progress={displayProgress} status={displayStatus} />}
-                {(error || (disableAutoStart && storybookStatus === 'error')) && <ErrorMessage message={error || 'Simulated upload failure at chunk #3'} />}
-
-                <div className="flex items-center justify-between">
-                    {displayStatus !== 'completed' ? (
-                        <UploadControls
-                            status={displayStatus}
-                            onPause={handleStorybookPause}
-                            onResume={handleStorybookResume}
-                        />
-                    ) : displayStatus === 'completed' ? (
-                        <div className="flex items-center gap-2 text-green-600 dark:text-green-400 font-bold text-sm">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>Completed</span>
+                <div className="relative pt-2">
+                    <ProgressBar progress={displayProgress} status={displayStatus === 'error' ? 'error' : isRetrying ? 'paused' : displayStatus} />
+                    {displayStatus === 'error' && (
+                        <div className="absolute top-0 right-0 -mt-4 text-[10px] font-black text-red-500 uppercase">
+                            Halted at {displayProgress}%
                         </div>
-                    ) : (
-                        <div className="text-xs text-gray-400 italic font-medium">Upload complete</div>
                     )}
+                </div>
+
+                {displayStatus === 'error' && (
+                    <div className="p-4 bg-red-500/5 dark:bg-red-500/10 border-l-4 border-red-500 rounded-xl overflow-hidden">
+                        <div className="flex items-start gap-3">
+                            <div className="mt-0.5">
+                                <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black text-red-600 dark:text-red-400 uppercase tracking-wide">Network Interruption Detected</p>
+                                <p className="text-[11px] font-bold text-red-500/80 dark:text-red-400/60 mt-0.5 leading-relaxed">
+                                    The upload was interrupted during Chunk #{uploadedChunks + 1}. You can resume exactly where you left off.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div className="flex items-center justify-between gap-4 pt-2">
+                    <div className="flex-1">
+                        {displayStatus === 'error' ? (
+                            <button
+                                onClick={handleRetry}
+                                disabled={isRetrying}
+                                className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-sm font-black transition-all shadow-xl shadow-red-600/30 active:scale-95 disabled:opacity-50 group"
+                            >
+                                <svg className={`w-5 h-5 group-hover:rotate-180 transition-transform duration-500 ${isRetrying ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                {isRetrying ? 'RECOVERING...' : 'RETRY FROM CHUNK'}
+                            </button>
+                        ) : displayStatus === 'completed' ? (
+                            <div className="flex items-center gap-3 text-green-600 dark:text-green-400 font-black text-xs uppercase tracking-widest bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-xl border border-green-100 dark:border-green-900/30">
+                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                <span>Verified & Saved</span>
+                            </div>
+                        ) : (
+                            <UploadControls
+                                status={displayStatus}
+                                onPause={handleStorybookPause}
+                                onResume={handleStorybookResume}
+                            />
+                        )}
+                    </div>
 
                     <div className="flex items-center gap-2">
-                        {displayStatus === 'completed' ? (
-                            <button
-                                onClick={onRemove}
-                                className="text-xs font-bold text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 px-6 py-2 rounded-lg transition-all shadow-md shadow-green-500/20"
-                            >
-                                DONE
-                            </button>
-                        ) : (
-                            <button
-                                onClick={onRemove}
-                                className="text-xs font-bold text-red-600 hover:text-red-700 dark:text-red-400 px-4 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 transition-all shadow-sm"
-                            >
-                                REMOVE
-                            </button>
-                        )}
+                        <button
+                            onClick={onRemove}
+                            className={`text-[11px] font-black px-5 py-3 rounded-2xl transition-all active:scale-95 tracking-widest uppercase ${displayStatus === 'completed' ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200' : 'bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100'}`}
+                        >
+                            {displayStatus === 'completed' ? 'DISMISS' : 'CANCEL'}
+                        </button>
                     </div>
                 </div>
             </div>

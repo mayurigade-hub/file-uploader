@@ -24,10 +24,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
         UNIQUE FLOATING NAVBAR
         This replaces the standard top-bar with a dynamic, glassmorphic pill that floats.
       */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-auto transition-all duration-500">
-        <nav className={`flex items-center justify-between sm:justify-center gap-1 sm:gap-2 p-1.5 transition-all duration-500 rounded-[2rem] border shadow-2xl ${scrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border-white/40 dark:border-gray-700/50 shadow-sky-500/10'
-          : 'bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border-white/20 dark:border-gray-800/30 shadow-black/5'
+      <div className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-auto transition-all duration-500">
+        <nav className={`flex items-center justify-between sm:justify-center gap-2 sm:gap-4 p-1.5 sm:p-2 transition-all duration-500 rounded-[2rem] border shadow-2xl ${scrolled
+          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl border-white/40 dark:border-gray-700/50 shadow-sky-500/10'
+          : 'bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border-white/20 dark:border-gray-800/30 shadow-black/5'
           }`}>
           {/* Logo Area */}
           <div className="flex items-center gap-2 px-2 sm:px-3 py-2 cursor-pointer group shrink-0">
@@ -56,8 +56,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
           <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1 hidden sm:block"></div>
 
           {/* Auth Actions with magnetic-like styling */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0 pr-1">
-            <ThemeToggle className="mr-1 shadow-none border-none hover:bg-gray-100 dark:hover:bg-gray-800 bg-transparent dark:bg-transparent" />
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0 pr-1">
+            <ThemeToggle className="scale-90 sm:scale-100 shadow-none border-none hover:bg-gray-100 dark:hover:bg-gray-800 bg-transparent dark:bg-transparent" />
             <button
               onClick={onSignIn}
               className="px-3 sm:px-4 py-2 text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -127,7 +127,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
               </span>
             </button>
             <a
-              href="https://github.com"
+              href="https://github.com/mayurigade-hub/file-uploader"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-10 py-4 text-lg font-bold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:-translate-y-1 group"
@@ -151,9 +151,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[280px]">
             {/* Feature 1 - Spans 2 columns */}
-            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl overflow-hidden hover:shadow-2xl hover:border-sky-200 dark:hover:border-sky-800 transition-all duration-500">
+            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl overflow-hidden hover:shadow-2xl hover:border-sky-200 dark:hover:border-sky-800 transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-br from-sky-50 to-transparent dark:from-sky-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10 h-full flex flex-col justify-between">
                 <div className="w-14 h-14 bg-sky-100 dark:bg-sky-900/30 text-sky-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
@@ -167,37 +167,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
             </div>
 
             {/* Feature 2 */}
-            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-800 transition-all duration-500">
+            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-800 transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-500 rounded-2xl flex items-center justify-center shadow-sm">
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2 tracking-tight">Pause & Resume</h3>
-                  <p className="text-gray-500 dark:text-gray-400 font-medium">Never start over. Network failures are handled gracefully.</p>
+                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Pause & Resume</h3>
+                  <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Never start over. Network failures are handled gracefully.</p>
                 </div>
               </div>
             </div>
 
             {/* Feature 3 */}
-            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-cyan-200 dark:hover:border-cyan-800 transition-all duration-500">
+            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-cyan-200 dark:hover:border-cyan-800 transition-all duration-500">
               <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-500 rounded-2xl flex items-center justify-center shadow-sm">
+                <div className="w-14 h-14 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2 tracking-tight">Native Preview</h3>
-                  <p className="text-gray-500 dark:text-gray-400 font-medium">View images and documents directly in the browser.</p>
+                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Native Preview</h3>
+                  <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">View images and documents directly in the browser.</p>
                 </div>
               </div>
             </div>
 
             {/* Feature 4 - Spans 2 columns */}
-            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-gray-900 dark:bg-black p-10 border border-gray-800 shadow-2xl overflow-hidden hover:border-sky-500/50 transition-all duration-500">
+            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-gray-900 dark:bg-black p-6 sm:p-10 border border-gray-800 shadow-2xl overflow-hidden hover:border-sky-500/50 transition-all duration-500">
               <div className="absolute -right-20 -top-20 w-64 h-64 bg-sky-500/20 blur-[80px] rounded-full"></div>
               <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-gray-800 text-sky-400 rounded-2xl flex items-center justify-center border border-gray-700 shadow-inner">
+                <div className="w-14 h-14 bg-gray-800 text-sky-400 rounded-2xl flex items-center justify-center mb-6 border border-gray-700 shadow-inner">
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                 </div>
                 <div>
