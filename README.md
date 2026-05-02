@@ -34,24 +34,24 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 
 ## 📸 Screenshots
 
+### 🌐 Landing Page
+> *Clean, airy landing page with sky-blue gradients introducing CloudDrop. Features a hero section with "Upload Anything. Lose Nothing." headline, feature highlights, workflow steps, and light/dark mode toggle in the navbar.*
+
+![Landing Page](./assets/Landing-Page.png)
+
+---
+
 ### 🚀 Upload Dashboard — Live Chunked Upload
-> *Active upload session showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Processing queue shows per-file progress bar, status badge, and toast notification confirming successful upload.*
+> *Active upload session in light mode showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Toast notification confirms successful upload with personalised welcome message.*
 
 ![Upload Dashboard](./assets/Upload-Dashboard.png)
 
 ---
 
 ### 📁 My Files — File Management Dashboard
-> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
+> *Complete file library in light mode with Storage Usage card (3.97 MB used of 100 MB limit), file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
 
 ![My Files Dashboard](./assets/My-Files.png)
-
----
-
-### 👁️ File Preview — In-App Document Viewer
-> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom and page navigation rendered directly inside CloudDrop.*
-
-![File Preview](./assets/File-Preview.png)
 
 ---
 
@@ -71,6 +71,8 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 | 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
 | 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
 | 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
+| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
+| 🌗 | **Light / Dark Mode** | Toggle between light and dark themes — available on landing page and dashboard |
 | 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
 | 👤 | **User Profile** | Account details, cloud usage stats, and password management |
 
