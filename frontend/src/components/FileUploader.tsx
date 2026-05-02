@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useFileUploader } from '../hooks/useFileUploader';
 import { ProgressBar } from './ProgressBar';
 import { UploadControls } from './UploadControls';
-import { ErrorMessage } from './ErrorMessage';
 import type { UploadMode, UploadStatus } from '../services/fakeApi';
 
 interface FileUploaderProps {
@@ -30,7 +29,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const {
         status,
         progress,
-        error,
         speed,
         startUpload,
         pauseUpload,
@@ -65,7 +63,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         if (!disableAutoStart && status !== queueStatus) {
             onStatusChange?.(status, progress);
         }
-        
+
         // Handle Toast Notifications - Only show once per status change
         if (!toastShownRef.current) {
             if (status === 'completed') {
@@ -117,7 +115,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                 </span>
             );
         }
-        
+
         if (status === 'error') {
             label = `FAILED (Chunk ${current}/${total || '?'})`;
         }
@@ -146,22 +144,20 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     };
 
     return (
-        <div className={`p-5 rounded-[2rem] border transition-all duration-500 shadow-sm hover:shadow-xl ${
-            displayStatus === 'error' 
-                ? 'bg-gray-50 dark:bg-gray-900/60 border-red-200 dark:border-red-900/50 scale-[1.01]' 
-                : isRetrying 
+        <div className={`p-5 rounded-[2rem] border transition-all duration-500 shadow-sm hover:shadow-xl ${displayStatus === 'error'
+            ? 'bg-gray-50 dark:bg-gray-900/60 border-red-200 dark:border-red-900/50 scale-[1.01]'
+            : isRetrying
                 ? 'bg-amber-50/30 dark:bg-amber-950/10 border-amber-200 dark:border-amber-900/30'
                 : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700'
-        }`}>
+            }`}>
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 overflow-hidden">
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 ${
-                            displayStatus === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-600' : 
-                            displayStatus === 'error' ? 'bg-red-100 dark:bg-red-900/30 text-red-600' : 
-                            isRetrying ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600' :
-                            'bg-blue-50 dark:bg-blue-900/20 text-blue-500'
-                        }`}>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 ${displayStatus === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-600' :
+                            displayStatus === 'error' ? 'bg-red-100 dark:bg-red-900/30 text-red-600' :
+                                isRetrying ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600' :
+                                    'bg-blue-50 dark:bg-blue-900/20 text-blue-500'
+                            }`}>
                             {displayStatus === 'completed' ? (
                                 <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                             ) : displayStatus === 'error' ? (
