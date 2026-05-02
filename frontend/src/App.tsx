@@ -246,7 +246,7 @@ function App() {
                         </div>
                     )}
 
-                    {activeTab === 'files' && <MyFiles showToast={showToast} />}
+                    {activeTab === 'files' && <MyFiles showToast={showToast} onNavigate={() => setActiveTab('upload')} />}
                     {activeTab === 'profile' && <UserProfile />}
                 </main>
             </div>

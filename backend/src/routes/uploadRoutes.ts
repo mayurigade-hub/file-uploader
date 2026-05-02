@@ -174,14 +174,16 @@ router.get('/view/:uploadId', async (req, res) => {
       return res.status(404).json({ error: 'File not found.' });
     }
 
-    if (!fs.existsSync(fileRecord.filePath)) {
-      return res.status(404).json({ error: 'Physical file missing.' });
+    const actualFilePath = path.join(process.cwd(), 'uploads', `${uploadId}-${fileRecord.filename}`);
+
+    if (!fs.existsSync(actualFilePath)) {
+      return res.status(404).json({ error: 'Physical file missing from server.' });
     }
 
     if (req.query.download === 'true') {
-      res.download(fileRecord.filePath, fileRecord.filename);
+      res.download(actualFilePath, fileRecord.filename);
     } else {
-      res.sendFile(fileRecord.filePath);
+      res.sendFile(actualFilePath);
     }
   } catch (error) {
     console.error('View error:', error);
@@ -200,8 +202,9 @@ router.delete('/:uploadId', async (req, res) => {
       return res.status(404).json({ error: 'File not found.' });
     }
 
-    if (fileRecord.filePath && fs.existsSync(fileRecord.filePath)) {
-      fs.unlinkSync(fileRecord.filePath);
+    const actualFilePath = path.join(UPLOADS_DIR, `${uploadId}-${fileRecord.filename}`);
+    if (fs.existsSync(actualFilePath)) {
+      fs.unlinkSync(actualFilePath);
     }
 
     await File.deleteOne({ uploadId });
