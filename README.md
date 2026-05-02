@@ -55,17 +55,17 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 
 ---
 
-### ⚡ Upload Dashboard — Active Uploads
-> *Active tab with live per-file progress tracking. When idle, shows "Idle Monitor" empty state with a direct CTA to the upload center.*
-
-![Active Uploads](./assets/Active-Uploads.png)
-
----
-
 ### 📁 My Files — File Management Dashboard
 > *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, sort controls, and per-file Download and Delete icon actions.*
 
 ![My Files Dashboard](./assets/My-Files.png)
+
+---
+
+### 👁️ File Preview — In-App Document Viewer
+> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom, page navigation, and toolbar controls rendered directly inside CloudDrop. Header shows file name, size, date, and a direct Download button.*
+
+![File Preview](./assets/File-Preview.png)
 
 ---
 
