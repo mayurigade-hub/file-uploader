@@ -187,7 +187,7 @@ Backend → `http://localhost:5000`
 
 ## 🌐 Live Demo
 
-> **Deployed Link:** _coming soon_
+> **Deployed Link:** https://file-uploader-bxbz.onrender.com/
 
 ---
 
