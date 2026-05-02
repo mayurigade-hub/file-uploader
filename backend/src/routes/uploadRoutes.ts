@@ -26,12 +26,11 @@ const upload = multer({ storage });
 router.post('/init', async (req, res) => {
   try {
     const { filename, totalSize, totalChunks } = req.body;
-    
+
     if (!filename || !totalSize || !totalChunks) {
       return res.status(400).json({ error: 'Missing required file metadata.' });
     }
 
-    // Check for duplicates
     const existingFile = await File.findOne({
       userId: (req as any).user.id,
       filename,
@@ -44,7 +43,7 @@ router.post('/init', async (req, res) => {
     }
 
     const uploadId = uuidv4();
-    
+
     const newFile = new File({
       filename,
       totalSize,
@@ -57,16 +56,15 @@ router.post('/init', async (req, res) => {
 
     await newFile.save();
 
-    // Create temp directory for this upload
     const fileTempDir = path.join(TEMP_DIR, uploadId);
     if (!fs.existsSync(fileTempDir)) {
       fs.mkdirSync(fileTempDir, { recursive: true });
     }
 
-    res.status(200).json({ 
-      uploadId, 
+    res.status(200).json({
+      uploadId,
       message: 'Upload initialized successfully.',
-      existingChunks: [] 
+      existingChunks: []
     });
   } catch (error) {
     console.error('Init error:', error);
@@ -90,18 +88,16 @@ router.post('/:uploadId/chunk', upload.single('chunk'), async (req, res) => {
       return res.status(404).json({ error: 'Upload session not found.' });
     }
 
-    // Save chunk to temp directory
     const chunkPath = path.join(TEMP_DIR, uploadId, `chunk-${chunkIndex}`);
     fs.writeFileSync(chunkPath, chunkFile.buffer);
 
-    // Update DB record
     if (!fileRecord.uploadedChunks.includes(Number(chunkIndex))) {
       fileRecord.uploadedChunks.push(Number(chunkIndex));
       fileRecord.status = 'uploading';
       await fileRecord.save();
     }
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: `Chunk ${chunkIndex} received successfully.`,
       uploadedChunks: fileRecord.uploadedChunks
     });
@@ -115,7 +111,7 @@ router.post('/:uploadId/chunk', upload.single('chunk'), async (req, res) => {
 router.post('/:uploadId/complete', async (req, res) => {
   try {
     const { uploadId } = req.params;
-    
+
     const fileRecord = await File.findOne({ uploadId });
     if (!fileRecord) {
       return res.status(404).json({ error: 'Upload session not found.' });
@@ -132,30 +128,31 @@ router.post('/:uploadId/complete', async (req, res) => {
       const chunkPath = path.join(TEMP_DIR, uploadId, `chunk-${i}`);
       const chunkData = fs.readFileSync(chunkPath);
       writeStream.write(chunkData);
-      // Delete chunk after merging
       fs.unlinkSync(chunkPath);
     }
 
     writeStream.end();
-
-    // Clean up temp directory
     fs.rmdirSync(path.join(TEMP_DIR, uploadId));
 
     fileRecord.status = 'completed';
     fileRecord.filePath = finalPath;
     await fileRecord.save();
 
-    res.status(200).json({ 
+    // ✅ FIXED HERE
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
+
+    res.status(200).json({
       message: 'File upload completed and merged successfully.',
-      fileUrl: `/uploads/${path.basename(finalPath)}` 
+      fileUrl: `${BASE_URL}/uploads/${path.basename(finalPath)}`
     });
+
   } catch (error) {
     console.error('Completion error:', error);
     res.status(500).json({ error: 'Failed to complete file upload.' });
   }
 });
 
-// Get all files for the current user
+// Get all files
 router.get('/', async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -167,7 +164,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// View/Stream a file
+// View file
 router.get('/view/:uploadId', async (req, res) => {
   try {
     const { uploadId } = req.params;
@@ -178,10 +175,9 @@ router.get('/view/:uploadId', async (req, res) => {
     }
 
     if (!fs.existsSync(fileRecord.filePath)) {
-      return res.status(404).json({ error: 'Physical file missing on server.' });
+      return res.status(404).json({ error: 'Physical file missing.' });
     }
 
-    // If download flag is present, force download, otherwise stream for view
     if (req.query.download === 'true') {
       res.download(fileRecord.filePath, fileRecord.filename);
     } else {
@@ -193,7 +189,7 @@ router.get('/view/:uploadId', async (req, res) => {
   }
 });
 
-// Delete a file
+// Delete file
 router.delete('/:uploadId', async (req, res) => {
   try {
     const { uploadId } = req.params;
@@ -204,12 +200,10 @@ router.delete('/:uploadId', async (req, res) => {
       return res.status(404).json({ error: 'File not found.' });
     }
 
-    // Delete physical file if it exists
     if (fileRecord.filePath && fs.existsSync(fileRecord.filePath)) {
       fs.unlinkSync(fileRecord.filePath);
     }
 
-    // Delete from DB
     await File.deleteOne({ uploadId });
 
     res.status(200).json({ message: 'File deleted successfully.' });
