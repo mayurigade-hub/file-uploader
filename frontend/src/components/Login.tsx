@@ -52,7 +52,9 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onBack, initialMod
         onLoginSuccess(false);
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Authentication failed');
+      console.error('Auth Error:', err);
+      const errorMessage = err.response?.data?.error || err.message || 'Authentication failed';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
       clearInterval(loadingTimer);

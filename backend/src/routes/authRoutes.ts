@@ -41,10 +41,21 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log(`🔐 [${new Date().toLocaleTimeString()}] Login attempt for username: "${username}"`);
+    
     const user = await User.findOne({ username });
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user) {
+      console.log(`❌ User not found: "${username}"`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      console.log(`❌ Incorrect password for: "${username}"`);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    console.log(`✅ Login successful: "${username}"`);
 
     const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
       expiresIn: '24h',
