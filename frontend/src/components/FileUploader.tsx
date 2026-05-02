@@ -29,26 +29,24 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const {
         status,
         progress,
+        error,
         speed,
         startUpload,
         pauseUpload,
         resumeUpload,
         uploadedChunks,
-        totalChunks
+        totalChunks,
+        fileUrl
     } = useFileUploader(mode);
 
 
     const hasStarted = useRef(false);
-    const [storybookStatus, setStorybookStatus] = useState<UploadStatus | null>(initialStatus || null);
+    
+    if (!file) return null;
 
-    if (!file) {
-        return null;
-    }
-
-    const displayStatus = disableAutoStart && storybookStatus ? storybookStatus : (status !== 'idle' ? status : queueStatus);
-    const displayProgress = disableAutoStart && storybookStatus === 'completed' ? 100 :
-        disableAutoStart && storybookStatus === 'uploading' ? 45 :
-            disableAutoStart && storybookStatus === 'paused' ? 60 : progress;
+    // Use the internal status for real-time updates, but fallback to prop status
+    const displayStatus = status !== 'idle' ? status : (initialStatus || queueStatus || 'waiting');
+    const displayProgress = progress;
 
     useEffect(() => {
         if (!disableAutoStart && file && status === 'idle' && !hasStarted.current) {
@@ -127,28 +125,22 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         );
     };
 
-    const handleStorybookPause = () => {
-        if (disableAutoStart) {
-            setStorybookStatus('paused');
-        } else {
-            pauseUpload();
-        }
+    const handlePause = () => {
+        pauseUpload();
     };
 
-    const handleStorybookResume = () => {
-        if (disableAutoStart) {
-            setStorybookStatus('uploading');
-        } else {
-            resumeUpload();
-        }
+    const handleResume = () => {
+        resumeUpload();
     };
 
     return (
         <div className={`p-5 rounded-[2rem] border transition-all duration-500 shadow-sm hover:shadow-xl ${displayStatus === 'error'
             ? 'bg-gray-50 dark:bg-gray-900/60 border-red-200 dark:border-red-900/50 scale-[1.01]'
-            : isRetrying
-                ? 'bg-amber-50/30 dark:bg-amber-950/10 border-amber-200 dark:border-amber-900/30'
-                : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700'
+            : displayStatus === 'completed'
+                ? 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 border-l-4 border-l-emerald-500'
+                : isRetrying
+                    ? 'bg-amber-50/30 dark:bg-amber-950/10 border-amber-200 dark:border-amber-900/30 border-l-4 border-l-amber-500'
+                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700'
             }`}>
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -229,15 +221,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                                 {isRetrying ? 'RECOVERING...' : 'RETRY FROM CHUNK'}
                             </button>
                         ) : displayStatus === 'completed' ? (
-                            <div className="flex items-center gap-3 text-green-600 dark:text-green-400 font-black text-xs uppercase tracking-widest bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-xl border border-green-100 dark:border-green-900/30">
-                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                <span>Verified & Saved</span>
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20">
+                                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                    <span>Sync Verified</span>
+                                </div>
                             </div>
                         ) : (
                             <UploadControls
                                 status={displayStatus}
-                                onPause={handleStorybookPause}
-                                onResume={handleStorybookResume}
+                                onPause={handlePause}
+                                onResume={handleResume}
                             />
                         )}
                     </div>
@@ -245,7 +239,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                     <div className="flex items-center gap-2">
                         <button
                             onClick={onRemove}
-                            className={`text-[11px] font-black px-5 py-3 rounded-2xl transition-all active:scale-95 tracking-widest uppercase ${displayStatus === 'completed' ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200' : 'bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100'}`}
+                            className={`
+                                text-[10px] font-black px-6 py-2.5 rounded-2xl transition-all active:scale-95 tracking-[0.1em] uppercase
+                                ${displayStatus === 'completed' 
+                                    ? 'bg-gray-100/80 dark:bg-gray-800/80 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300' 
+                                    : 'bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/40'
+                                }
+                            `}
                         >
                             {displayStatus === 'completed' ? 'DISMISS' : 'CANCEL'}
                         </button>

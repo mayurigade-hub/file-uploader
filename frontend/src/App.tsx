@@ -67,7 +67,7 @@ function App() {
     };
 
     const stats = {
-        uploading: queue.filter(i => i.status === 'uploading').length,
+        uploading: queue.filter(i => ['uploading', 'waiting', 'paused', 'ready'].includes(i.status)).length,
         completed: queue.filter(i => i.status === 'completed').length,
         failed: queue.filter(i => i.status === 'error').length,
         total: queue.length
