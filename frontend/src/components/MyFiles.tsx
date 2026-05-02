@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { uploadService } from '../services/uploadService';
-import { Download, Trash2, Search, RotateCcw, FileText, Image as ImageIcon, Film, FileBarChart, Archive, File as FileIconGeneric, FolderOpen, ChevronRight, X } from 'lucide-react';
+import { Download, Trash2, RotateCcw, X } from 'lucide-react';
 
 const API = import.meta.env.VITE_API_URL;
 
 interface MyFilesProps {
-  onNavigate?: () => void;
   showToast?: (msg: string, type: 'success' | 'error' | 'warning') => void;
 }
 
-export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
+export const MyFiles: React.FC<MyFilesProps> = ({ showToast }) => {
   const [files, setFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('all');
   const [fileToDelete, setFileToDelete] = useState<any>(null);
   const [previewFile, setPreviewFile] = useState<any>(null);
 
@@ -61,20 +58,6 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
     document.body.removeChild(link);
   };
 
-  const getFileCategory = (filename: string) => {
-    const ext = filename.split('.').pop()?.toLowerCase() || '';
-    if (['pdf', 'doc', 'docx', 'ppt', 'pptx', 'txt'].includes(ext)) return 'documents';
-    if (['png', 'jpg', 'jpeg', 'gif', 'svg'].includes(ext)) return 'images';
-    if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) return 'videos';
-    return 'others';
-  };
-
-  const filteredFiles = files.filter(file => {
-    const matchesSearch = file.filename.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = filter === 'all' || getFileCategory(file.filename) === filter;
-    return matchesSearch && matchesFilter;
-  });
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-gray-500 animate-pulse">
@@ -85,9 +68,7 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
   }
 
   if (error) {
-    return (
-      <div className="text-center text-red-500">{error}</div>
-    );
+    return <div className="text-center text-red-500">{error}</div>;
   }
 
   return (
@@ -100,7 +81,7 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
         ) : (
           <table className="w-full">
             <tbody>
-              {filteredFiles.map((file) => (
+              {files.map((file) => (
                 <tr key={file.uploadId}>
                   <td
                     onClick={() => setPreviewFile(file)}
@@ -108,11 +89,13 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
                   >
                     {file.filename}
                   </td>
+
                   <td>
                     <button onClick={() => handleDownload(file.uploadId, file.filename)}>
                       <Download />
                     </button>
                   </td>
+
                   <td>
                     <button onClick={() => handleDeleteClick(file)}>
                       <Trash2 />
@@ -124,6 +107,29 @@ export const MyFiles: React.FC<MyFilesProps> = ({ onNavigate, showToast }) => {
           </table>
         )}
       </div>
+
+      {/* DELETE CONFIRM MODAL */}
+      {fileToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg">
+            <p>Are you sure you want to delete this file?</p>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setFileToDelete(null)}
+                className="px-4 py-2 border rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* PREVIEW MODAL */}
       {previewFile && (
