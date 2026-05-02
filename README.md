@@ -35,21 +35,35 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 ## 📸 Screenshots
 
 ### 🌐 Landing Page
-> *Clean, airy landing page with sky-blue gradients introducing CloudDrop. Features a hero section with "Upload Anything. Lose Nothing." headline, feature highlights, workflow steps, and light/dark mode toggle in the navbar.*
+> *Clean, airy landing page with sky-blue gradients. Hero section with "Upload Anything. Lose Nothing." headline, feature highlights, workflow steps, and light/dark mode toggle in navbar.*
 
-![Landing Page](./assets/Landing-page.png)
+![Landing Page](./assets/Landing-Page.png)
 
 ---
 
-### 🚀 Upload Dashboard — Live Chunked Upload
-> *Active upload session in light mode showing real-time progress. Stats panel tracks Uploading, Completed, Failed, and Total counts. Drag-and-drop zone accepts any file type. Toast notification confirms successful upload with personalised welcome message.*
+### 🚀 Upload Dashboard — Upload History Tab
+> *All Uploads tab showing upload history with drag-and-drop zone. Queue filter tabs — All Uploads, Active, Failed — let users quickly navigate between upload states. Empty state shows "Start Your Journey" when queue is clear.*
 
-![Upload Dashboard](./assets/Upload-Dashboard.png)
+![Upload History](./assets/Upload-Dashboard.png)
+
+---
+
+### ⚡ Upload Dashboard — Active Uploads Tab
+> *Active tab showing the Idle Monitor empty state with a "Go To Upload Center" CTA. When uploads are running, this view tracks live progress per file in real time.*
+
+![Active Uploads](./assets/Active-Uploads.png)
+
+---
+
+### ❌ Upload Dashboard — Failed Uploads Tab
+> *Failed tab showing "Zero Failures" empty state with green check — reassures the user everything is running smoothly. When failures occur, each failed file appears here with a retry option.*
+
+![Failed Uploads](./assets/Failed-Uploads.png)
 
 ---
 
 ### 📁 My Files — File Management Dashboard
-> *Complete file library in light mode with Storage Usage card (3.97 MB used of 100 MB limit), file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
+> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
 
 ![My Files Dashboard](./assets/My-Files.png)
 
@@ -64,7 +78,9 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 | 🧩 | **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
 | ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
 | 🔁 | **Auto Retry** | Failed chunks are automatically retried without user intervention |
-| 📋 | **Upload Queue** | Manage multiple simultaneous uploads with per-file progress bars |
+| 📋 | **Upload Queue Tabs** | Filter uploads by All, Active, or Failed — with meaningful empty states for each |
+| ⚡ | **Active Monitor** | Live tracking of all currently running uploads in a dedicated view |
+| ❌ | **Failed Items View** | Isolated view for failed uploads — retry directly without hunting through the queue |
 | 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
 | 🔍 | **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
 | 🔃 | **Sort Files** | Sort your library by Date, Name, or Size in either direction |
@@ -72,7 +88,7 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 | 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
 | 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
 | 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
-| 🌗 | **Light / Dark Mode** | Toggle between light and dark themes — available on landing page and dashboard |
+| 🌗 | **Light / Dark Mode** | Toggle between light and dark themes across landing page and dashboard |
 | 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
 | 👤 | **User Profile** | Account details, cloud usage stats, and password management |
 
@@ -189,7 +205,7 @@ Backend → `http://localhost:5000`
 
 ## 🌐 Live Demo
 
-> **Deployed Link:** https://file-uploader-bxbz.onrender.com/
+> **Deployed Link:** https://clouddrop-frontend.onrender.com
 
 ---
 
