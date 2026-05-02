@@ -29,19 +29,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     const {
         status,
         progress,
-        error,
         speed,
         startUpload,
         pauseUpload,
         resumeUpload,
         uploadedChunks,
         totalChunks,
-        fileUrl
     } = useFileUploader(mode);
 
 
     const hasStarted = useRef(false);
-    
+
     if (!file) return null;
 
     // Use the internal status for real-time updates, but fallback to prop status
@@ -241,8 +239,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
                             onClick={onRemove}
                             className={`
                                 text-[10px] font-black px-6 py-2.5 rounded-2xl transition-all active:scale-95 tracking-[0.1em] uppercase
-                                ${displayStatus === 'completed' 
-                                    ? 'bg-gray-100/80 dark:bg-gray-800/80 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300' 
+                                ${displayStatus === 'completed'
+                                    ? 'bg-gray-100/80 dark:bg-gray-800/80 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300'
                                     : 'bg-red-50 dark:bg-red-950/30 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/40'
                                 }
                             `}
