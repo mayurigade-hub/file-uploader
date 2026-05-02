@@ -37,7 +37,7 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 ### 🌐 Landing Page
 > *Clean, airy landing page with sky-blue gradients introducing CloudDrop. Features a hero section with "Upload Anything. Lose Nothing." headline, feature highlights, workflow steps, and light/dark mode toggle in the navbar.*
 
-![Landing Page](./assets/Landing-Page.png)
+![Landing Page](./assets/Landing-page.png)
 
 ---
 
