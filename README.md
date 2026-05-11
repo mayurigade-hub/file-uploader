@@ -73,25 +73,25 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 
 ## ✨ Features
 
-| | Feature | Description |
-|---|---|---|
-| 🧩 | **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
-| ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
-| 🔴 | **Network Recovery** | Detects interruptions, identifies exact failed chunk, resumes from that point |
-| 🔁 | **Auto Retry** | Failed chunks are automatically retried without user intervention |
-| 📋 | **Upload Queue Tabs** | Filter uploads by All, Active, or Failed — with meaningful empty states for each |
-| ⚡ | **Active Monitor** | Live tracking of all currently running uploads in a dedicated view |
-| ❌ | **Failed Items View** | Isolated view for failed uploads with Retry From Chunk option |
-| 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
-| 🔍 | **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
-| 🔃 | **Sort Files** | Sort your library by Date, Name, or Size in either direction |
-| 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
-| 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
-| 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
-| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
-| 🌗 | **Light / Dark Mode** | Toggle between light and dark themes across landing page and dashboard |
-| 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
-| 👤 | **User Profile** | Account details, cloud usage stats, and password management |
+| Feature | Description |
+|---|---|
+| **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
+| **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
+| **Network Recovery** | Detects interruptions, identifies exact failed chunk, resumes from that point |
+| **Auto Retry** | Failed chunks are automatically retried without user intervention |
+| **Upload Queue Tabs** | Filter uploads by All, Active, or Failed — with meaningful empty states for each |
+| **Active Monitor** | Live tracking of all currently running uploads in a dedicated view |
+| **Failed Items View** | Isolated view for failed uploads with Retry From Chunk option |
+| **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
+| **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
+| **Sort Files** | Sort your library by Date, Name, or Size in either direction |
+| **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
+| **Safe Delete** | Confirmation modal prevents accidental deletions |
+| **JWT Auth** | Secure login and registration with token-based session management |
+| **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
+| **Light / Dark Mode** | Toggle between light and dark themes across landing page and dashboard |
+| **Toast Notifications** | Non-blocking feedback for every user action |
+| **User Profile** | Account details, cloud usage stats, and password management |
 
 ---
 
