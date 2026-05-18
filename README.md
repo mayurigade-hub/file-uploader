@@ -41,31 +41,31 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 
 ---
 
-### 🚀 Upload Dashboard — Upload History Tab
-> *All Uploads tab showing upload history with drag-and-drop zone. Queue filter tabs — All Uploads, Active, Failed — let users quickly navigate between upload states. Empty state shows "Start Your Journey" when queue is clear.*
+### 🚀 Upload Dashboard — Upload History
+> *All Uploads tab showing upload history with drag-and-drop zone. Queue filter tabs — All Uploads, Active, Failed — let users quickly navigate between upload states.*
 
-![Upload History](./assets/Upload-Dashboard.png)
-
----
-
-### ⚡ Upload Dashboard — Active Uploads Tab
-> *Active tab showing the Idle Monitor empty state with a "Go To Upload Center" CTA. When uploads are running, this view tracks live progress per file in real time.*
-
-![Active Uploads](./assets/Active-Uploads.png)
+![Upload Dashboard](./assets/Upload-Dashboard.png)
 
 ---
 
-### ❌ Upload Dashboard — Failed Uploads Tab
-> *Failed tab showing "Zero Failures" empty state with green check — reassures the user everything is running smoothly. When failures occur, each failed file appears here with a retry option.*
+### 🔴 Failed Upload — Network Recovery
+> *When a network interruption is detected mid-upload, CloudDrop identifies the exact failed chunk, halts at the precise percentage, and surfaces a "Retry From Chunk" button to resume without restarting the entire file. Recovery Hub monitors all uploads in the background.*
 
-![Failed Uploads](./assets/Failed-Uploads.png)
+![Failed Upload Recovery](./assets/Failed-Recovery.png)
 
 ---
 
 ### 📁 My Files — File Management Dashboard
-> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, and per-file Download and Delete icon actions.*
+> *Complete file library with Storage Usage card, file type filter tabs (All / Documents / Images / Videos / Others), live search bar, sort controls, and per-file Download and Delete icon actions.*
 
 ![My Files Dashboard](./assets/My-Files.png)
+
+---
+
+### 👁️ File Preview — In-App Document Viewer
+> *Clicking any file name opens a full in-app preview modal — no download required. PDF viewer with zoom, page navigation, and toolbar controls rendered directly inside CloudDrop. Header shows file name, size, date, and a direct Download button.*
+
+![File Preview](./assets/File-Preview.png)
 
 ---
 
@@ -73,24 +73,25 @@ No timeouts. No full restarts. Just reliable file delivery — with a full user 
 
 ## ✨ Features
 
-| | Feature | Description |
-|---|---|---|
-| 🧩 | **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
-| ⏸️ | **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
-| 🔁 | **Auto Retry** | Failed chunks are automatically retried without user intervention |
-| 📋 | **Upload Queue Tabs** | Filter uploads by All, Active, or Failed — with meaningful empty states for each |
-| ⚡ | **Active Monitor** | Live tracking of all currently running uploads in a dedicated view |
-| ❌ | **Failed Items View** | Isolated view for failed uploads — retry directly without hunting through the queue |
-| 👁️ | **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
-| 🔍 | **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
-| 🔃 | **Sort Files** | Sort your library by Date, Name, or Size in either direction |
-| 💾 | **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
-| 🗑️ | **Safe Delete** | Confirmation modal prevents accidental deletions |
-| 🔐 | **JWT Auth** | Secure login and registration with token-based session management |
-| 🛡️ | **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
-| 🌗 | **Light / Dark Mode** | Toggle between light and dark themes across landing page and dashboard |
-| 🔔 | **Toast Notifications** | Non-blocking feedback for every user action |
-| 👤 | **User Profile** | Account details, cloud usage stats, and password management |
+| Feature | Description |
+|---|---|
+| **Chunked Uploads** | Files split into 5MB segments — only failed chunks are retried, never the whole file |
+| **Pause & Resume** | Suspend any upload mid-transfer and resume later — even after a page refresh |
+| **Network Recovery** | Detects interruptions, identifies exact failed chunk, resumes from that point |
+| **Auto Retry** | Failed chunks are automatically retried without user intervention |
+| **Upload Queue Tabs** | Filter uploads by All, Active, or Failed — with meaningful empty states for each |
+| **Active Monitor** | Live tracking of all currently running uploads in a dedicated view |
+| **Failed Items View** | Isolated view for failed uploads with Retry From Chunk option |
+| **File Preview** | Click any file to preview PDFs, images, and videos directly in the browser |
+| **Search & Filter** | Search files by name; filter by type — Documents, Images, Videos, Others |
+| **Sort Files** | Sort your library by Date, Name, or Size in either direction |
+| **Storage Tracker** | Visual storage usage bar with percentage and 100MB limit indicator |
+| **Safe Delete** | Confirmation modal prevents accidental deletions |
+| **JWT Auth** | Secure login and registration with token-based session management |
+| **Rate Limiting** | Auth and upload endpoints protected against brute-force attacks |
+| **Light / Dark Mode** | Toggle between light and dark themes across landing page and dashboard |
+| **Toast Notifications** | Non-blocking feedback for every user action |
+| **User Profile** | Account details, cloud usage stats, and password management |
 
 ---
 
@@ -109,6 +110,7 @@ POST /api/upload  →  chunk 1  ✅
 POST /api/upload  →  chunk 2  ✅
 POST /api/upload  →  chunk 3  ❌  network drops
       ↓
+Network Interruption Detected
 Resume — retries chunk 3 only
       ↓
 All chunks received → fs merges → final file saved
