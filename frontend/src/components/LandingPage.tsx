@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 
 interface LandingPageProps {
@@ -153,59 +153,67 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[280px]">
             {/* Feature 1 - Spans 2 columns */}
-            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl overflow-hidden hover:shadow-2xl hover:border-sky-200 dark:hover:border-sky-800 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-50 to-transparent dark:from-sky-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-sky-100 dark:bg-sky-900/30 text-sky-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Intelligent Chunking</h3>
-                  <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Files are automatically split into optimized 5MB pieces to ensure maximum transfer visibility and bypass server limits.</p>
+            <FadeInView delay={100} className="md:col-span-2" direction="left">
+              <div className="h-full relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl overflow-hidden hover:shadow-2xl hover:border-sky-200 dark:hover:border-sky-800 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-50 to-transparent dark:from-sky-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  <div className="w-14 h-14 bg-sky-100 dark:bg-sky-900/30 text-sky-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold mb-3 tracking-tight">Intelligent Chunking</h3>
+                    <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Files are automatically split into optimized 5MB pieces to ensure maximum transfer visibility and bypass server limits.</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeInView>
 
             {/* Feature 2 */}
-            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-800 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Pause & Resume</h3>
-                  <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Never start over. Network failures are handled gracefully.</p>
+            <FadeInView delay={250} direction="down">
+              <div className="h-full relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-800 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold mb-3 tracking-tight">Pause & Resume</h3>
+                    <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">Never start over. Network failures are handled gracefully.</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeInView>
 
             {/* Feature 3 */}
-            <div className="relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-cyan-200 dark:hover:border-cyan-800 transition-all duration-500">
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Native Preview</h3>
-                  <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">View images and documents directly in the browser.</p>
+            <FadeInView delay={400} direction="up">
+              <div className="h-full relative group rounded-[2.5rem] bg-white dark:bg-gray-800/50 p-6 sm:p-10 border border-gray-100 dark:border-gray-700/50 shadow-xl hover:shadow-2xl hover:border-cyan-200 dark:hover:border-cyan-800 transition-all duration-500">
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  <div className="w-14 h-14 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold mb-3 tracking-tight">Native Preview</h3>
+                    <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">View images and documents directly in the browser.</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeInView>
 
             {/* Feature 4 - Spans 2 columns */}
-            <div className="md:col-span-2 relative group rounded-[2.5rem] bg-gray-900 dark:bg-black p-6 sm:p-10 border border-gray-800 shadow-2xl overflow-hidden hover:border-sky-500/50 transition-all duration-500">
-              <div className="absolute -right-20 -top-20 w-64 h-64 bg-sky-500/20 blur-[80px] rounded-full"></div>
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="w-14 h-14 bg-gray-800 text-sky-400 rounded-2xl flex items-center justify-center mb-6 border border-gray-700 shadow-inner">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold mb-3 text-white tracking-tight">Enterprise Security</h3>
-                  <p className="text-lg text-gray-400 font-medium">Bank-grade encryption for all assets. Secure JWT authentication and precise access controls keep your data safe and private.</p>
+            <FadeInView delay={550} className="md:col-span-2" direction="right">
+              <div className="h-full relative group rounded-[2.5rem] bg-gray-900 dark:bg-black p-6 sm:p-10 border border-gray-800 shadow-2xl overflow-hidden hover:border-sky-500/50 transition-all duration-500">
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-sky-500/20 blur-[80px] rounded-full"></div>
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  <div className="w-14 h-14 bg-gray-800 text-sky-400 rounded-2xl flex items-center justify-center mb-6 border border-gray-700 shadow-inner">
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold mb-3 text-white tracking-tight">Enterprise Security</h3>
+                    <p className="text-lg text-gray-400 font-medium">Bank-grade encryption for all assets. Secure JWT authentication and precise access controls keep your data safe and private.</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </FadeInView>
           </div>
         </div>
       </section>
@@ -227,25 +235,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 relative z-10">
-              <WorkflowStep
-                number="01"
-                title="Drop"
-                description="Drag and drop massive files. We handle validation and stream initialization."
-                icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />}
-              />
-              <WorkflowStep
-                number="02"
-                title="Chunk"
-                description="Files are intelligently split into 5MB blocks for parallel, resilient transfer."
-                icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />}
-                active
-              />
-              <WorkflowStep
-                number="03"
-                title="Manage"
-                description="Instantly preview, share, download, or delete your assets from the dashboard."
-                icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />}
-              />
+              <FadeInView direction="left" delay={100}>
+                <WorkflowStep
+                  number="01"
+                  title="Drop"
+                  description="Drag and drop massive files. We handle validation and stream initialization."
+                  icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />}
+                />
+              </FadeInView>
+              <FadeInView direction="up" delay={250}>
+                <WorkflowStep
+                  number="02"
+                  title="Chunk"
+                  description="Files are intelligently split into 5MB blocks for parallel, resilient transfer."
+                  icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />}
+                  active
+                />
+              </FadeInView>
+              <FadeInView direction="right" delay={400}>
+                <WorkflowStep
+                  number="03"
+                  title="Manage"
+                  description="Instantly preview, share, download, or delete your assets from the dashboard."
+                  icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />}
+                />
+              </FadeInView>
             </div>
           </div>
         </div>
@@ -323,3 +337,51 @@ const WorkflowStep = ({ number, title, description, icon, active = false }: { nu
     <p className="text-lg text-gray-500 dark:text-gray-400 font-medium px-4 relative z-10 leading-relaxed">{description}</p>
   </div>
 );
+
+
+
+type Direction = 'up' | 'down' | 'left' | 'right';
+
+const FadeInView = ({ children, delay = 0, className = '', direction = 'up' }: { children: React.ReactNode, delay?: number, className?: string, direction?: Direction }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (domRef.current) observer.unobserve(domRef.current);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    if (domRef.current) observer.observe(domRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const getTransform = () => {
+    if (isVisible) return 'translate(0, 0)';
+    switch (direction) {
+      case 'up': return 'translateY(40px)';
+      case 'down': return 'translateY(-40px)';
+      case 'left': return 'translateX(-40px)';
+      case 'right': return 'translateX(40px)';
+      default: return 'translateY(40px)';
+    }
+  };
+
+  return (
+    <div
+      ref={domRef}
+      className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transition: `opacity 0.8s ease-out ${delay}ms, transform 0.8s ease-out ${delay}ms`
+      }}
+    >
+      {children}
+    </div>
+  );
+};
